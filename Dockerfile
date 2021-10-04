@@ -8,8 +8,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-instal
     --no-install-suggests -y make gcc g++ wget tar grep
 RUN tar -xzf squid.tar.gz; \
   cd squid-$VERSION; \
- ./configure --with-default-user=root --srcdir=.; \
-  make -j$(nproc); \
+ ./configure --with-default-user=root; \
   make install -j$(nproc); \
   chmod +x /tini; \
   /usr/local/squid/sbin/squid -v
@@ -20,6 +19,6 @@ ENV PATH="/usr/local/squid/sbin/:/usr/local/squid/bin/:${PATH}"
 
 COPY --from=build /tini /tini
 COPY --from=build /usr/local/squid /usr/local/squid
-RUN squid -z
+# RUN squid -z
 ENTRYPOINT ["/tini", "--"]
-CMD ["squid","--foreground"]
+CMD ["/usr/local/squid/sbin/squid","--foreground"]
