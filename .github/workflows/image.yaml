@@ -10,10 +10,7 @@ on:
   #     - "app/**"
 jobs:
   api:
-    runs-on: [self-hosted]
-    defaults:
-      run:
-        shell: bash
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
