@@ -1,4 +1,5 @@
-FROM ubuntu:20.04 as build
+# FROM ubuntu:20.04 as build
+FROM ubuntu:20.04
 ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
 WORKDIR /app
 RUN set -ex; \
@@ -12,7 +13,7 @@ RUN set -ex; \
   chmod +x /tini; \
   /usr/local/squid/sbin/squid -v
 
-FROM ubuntu:21.10
+# FROM ubuntu
 
 # RUN apt update; \
 #   DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends cron libasn1-8-heimdal \
@@ -24,12 +25,12 @@ FROM ubuntu:21.10
 #   libsqlite3-0 libssl1.1 libwind0-heimdal libxml2 logrotate netbase openssl perl \
 #   perl-modules-5.30 squid-common squid-langpack ssl-cert tzdata ca-certificates
 
-COPY --from=build /usr/local/squid /usr/local/squid
-COPY --from=build /tini /tini
+# COPY --from=build /usr/local/squid /usr/local/squid
+# COPY --from=build /tini /tini
 
-ENTRYPOINT ["/tini", "--"]
+# ENTRYPOINT ["/tini", "--"]
 
-CMD ["/usr/local/squid/sbin/squid"]
+# CMD ["/usr/local/squid/sbin/squid"]
 
 
 # apt update
