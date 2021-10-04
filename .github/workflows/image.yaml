@@ -2,9 +2,8 @@ name: api
 on:
   push:
     # branches: [develop]
-    paths:
-      - ".github/workflows/image.yaml"
-      - "!**.md"
+    paths-ignore:
+      - "**.md"
   # pull_request:
   #   paths:
   #     - "app/**"
