@@ -19,6 +19,6 @@ ENV PATH="/usr/local/squid/sbin/:/usr/local/squid/bin/:${PATH}"
 
 COPY --from=build /tini /tini
 COPY --from=build /usr/local/squid /usr/local/squid
-RUN chown -cR squid /usr/local/squid/var/ && squid -z
+RUN chmod o+rw -R /usr/local/squid/var/ && squid -z
 ENTRYPOINT ["/tini", "--"]
 CMD ["/usr/local/squid/sbin/squid","--foreground"]
