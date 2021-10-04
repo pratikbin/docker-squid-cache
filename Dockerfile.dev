@@ -1,8 +1,11 @@
 # FROM ubuntu:20.04 as build
-FROM bitnami/minideb
-
-COPY --from=pratikimprowise/squid:5.1-e185461 /usr/local/squid /usr/local/squid
-RUN chmod o+rw -R /usr/local/squid/var/
+FROM pratikimprowise/squid:5.1
+RUN adduser --disabled-login --no-create-home --disabled-password squid
+# RUN chown -cR squid /usr/local/squid/var/ && squid -z
+RUN mkdir /cache && chown -cR squid:squid /usr/local/squid/ /cache
+USER squid
+ENTRYPOINT ["/tini", "--"]
+CMD ["/usr/local/squid/sbin/squid","--foreground","-d","1"]
 
 
 # FROM ubuntu:20.04 as build
