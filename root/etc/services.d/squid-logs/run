@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 while true; do
-  if [[ -f /tmp/access.log ]]; then
-    tail -f /tmp/access.log
+  if [[ -f /usr/local/squid/var/logs/access.log ]]; then
+    tail -f /usr/local/squid/var/logs/access.log
   else
     sleep 1
   fi
