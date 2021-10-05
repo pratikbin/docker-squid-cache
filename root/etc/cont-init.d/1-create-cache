@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+mkdir -p /cache
+chown -cR squid:squid /usr/local/squid/var/ /cache

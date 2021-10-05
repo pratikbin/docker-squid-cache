@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+while true; do
+  if [[ -f /tmp/access.log ]]; then
+    tail -f /tmp/access.log
+  else
+    sleep 1
+  fi
+done

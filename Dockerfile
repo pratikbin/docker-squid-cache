@@ -18,5 +18,5 @@ RUN set -ex; \
   chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer /; \
   adduser --disabled-login --no-create-home --disabled-password squid
 COPY --from=build /usr/local/squid /usr/local/squid
-COPY root/ /etc/
+COPY root/ /
 ENTRYPOINT ["/init"]

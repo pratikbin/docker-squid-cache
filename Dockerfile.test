@@ -1,17 +1,18 @@
 # FROM ubuntu:20.04 as build
 FROM pratikimprowise/squid:5.1
-ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.1/s6-overlay-amd64-installer /tmp/
-RUN chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer / && rm -rf /tmp/s6-overlay-amd64-installer
+ARG S6_VERSION=2.2.0.1
+ADD https://github.com/just-containers/s6-overlay/releases/download/v$S6_VERSION/s6-overlay-amd64-installer /tmp/
+ENV PATH="/usr/local/squid/sbin/:/usr/local/squid/bin/:${PATH}"
+RUN set -ex; \
+  chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer /; \
+  adduser --disabled-login --no-create-home --disabled-password squid
+COPY root/ /
 # RUN adduser --disabled-login --no-create-home --disabled-password squid
-RUN adduser squid
 # RUN chown -cR squid /usr/local/squid/var/ && squid -z
 # RUN mkdir -p /cache /etc/services.d/squid/ && chown -cR squid:squid /usr/local/squid/ /cache; \
-RUN set -ex; \
-  mkdir -p /etc/services.d/squid/; \
+
   # printf '/cache true squid:squid 0644 0755' >/etc/fix-attrs.d/01-squid-cache; \
   # printf '/usr/local/squid/var/ true squid:squid 0644 0755' >/etc/fix-attrs.d/02-squid-var; \
-  printf '#!/usr/bin/with-contenv bash\nmkdir -p /cache\nchown -cR squid:squid /usr/local/squid/var/ /cache' >/etc/cont-init.d/3-config; \
-  printf '#!/usr/bin/execlineb\ns6-envuidgid squid\ns6-applyuidgid -U\n/usr/local/squid/sbin/squid -z\n/usr/local/squid/sbin/squid --foreground -d 1;' >/etc/services.d/squid/run
 
 # USER squid
 # ENTRYPOINT ["/tini", "--"]
