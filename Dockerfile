@@ -12,15 +12,11 @@ RUN tar -xzf squid.tar.gz; \
 
 FROM ubuntu:21.10
 ARG S6_VERSION=2.2.0.1
-ADD https://github.com/just-containers/s6-overlay/releases/download/$S6_VERSION/s6-overlay-amd64-installer /tmp/
+ADD https://github.com/just-containers/s6-overlay/releases/download/v$S6_VERSION/s6-overlay-amd64-installer /tmp/
 ENV PATH="/usr/local/squid/sbin/:/usr/local/squid/bin/:${PATH}"
-RUN chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer /
-RUN adduser --disabled-login --no-create-home --disabled-password squid
 RUN set -ex; \
-  mkdir -p /etc/services.d/squid/; \
-  printf '#!/usr/bin/with-contenv bash\nmkdir -p /cache\nchown -cR squid:squid /usr/local/squid/var/ /cache' >/etc/cont-init.d/1-config; \
-  printf '#!/usr/bin/execlineb\ns6-envuidgid squid\ns6-applyuidgid -U\n/usr/local/squid/sbin/squid -z\n/usr/local/squid/sbin/squid --foreground -d 1;' >/etc/services.d/squid/run
-
+  chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer /; \
+  adduser --disabled-login --no-create-home --disabled-password squid
 COPY --from=build /usr/local/squid /usr/local/squid
-USER squid
+COPY root/ /etc/
 ENTRYPOINT ["/init"]
