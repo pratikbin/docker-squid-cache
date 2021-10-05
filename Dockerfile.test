@@ -1,6 +1,7 @@
 # FROM ubuntu:20.04 as build
 FROM pratikimprowise/squid:5.1
 ARG S6_VERSION=2.2.0.1
+COPY --from=pratikimprowise/squid:dev-6e6b8bb-202110050700852 /usr/local/squid /usr/local/squid
 ADD https://github.com/just-containers/s6-overlay/releases/download/v$S6_VERSION/s6-overlay-amd64-installer /tmp/
 ENV PATH="/usr/local/squid/sbin/:/usr/local/squid/bin/:${PATH}"
 RUN set -ex; \
