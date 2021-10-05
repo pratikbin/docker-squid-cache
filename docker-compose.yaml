@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  gluetun:
+    restart: always
+    image: pratikimprowise/squid:5-dev
+    container_name: squid
+    ports:
+      - 3128:3128
+    volumes:
+      - ./conf/squid-cache.conf:/usr/local/squid/etc/squid.conf
+      - ./cache:/cache
