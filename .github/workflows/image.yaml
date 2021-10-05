@@ -4,6 +4,8 @@ on:
     # branches: [develop]
     paths-ignore:
       - "**.md"
+      - "conf/**.conf"
+      - "Dockerfile.*"
   # pull_request:
   #   paths:
   #     - "app/**"
@@ -23,7 +25,7 @@ jobs:
         with:
           images: pratikimprowise/squid
           tags: |
-            type=raw,value={{branch}}-{{sha}}-{{date 'YYYYMMDDHHmmSSS'}}
+            type=raw,value={{branch}}
             type=raw,value=5.1-{{branch}}
             type=raw,value=5-{{branch}}
 
