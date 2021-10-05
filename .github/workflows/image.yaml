@@ -1,4 +1,4 @@
-name: api
+name: squid
 on:
   push:
     # branches: [develop]
