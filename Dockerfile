@@ -9,7 +9,7 @@ RUN tar -xzf squid.tar.gz; \
  ./configure \
     --with-default-user=squid \
     --with-openssl=$(openssl version -d | sed 's/OPENSSLDIR: \|"//g') \
-    --enable-ssl-crtd; \
+    # --enable-ssl-crtd; \
   make install -j$(nproc); \
   /usr/local/squid/sbin/squid -v
 
