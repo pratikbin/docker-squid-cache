@@ -3,10 +3,10 @@ ARG VERSION=5.1
 ARG MAJOR_VERSION=5
 ADD http://www.squid-cache.org/Versions/v$MAJOR_VERSION/squid-$VERSION.tar.gz squid.tar.gz
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
-    --no-install-suggests -y make gcc g++ openssl libssl-dev
+    --no-install-suggests -y make gcc g++ openssl libssl-dev tar wget curl
 RUN tar -xzf squid.tar.gz; \
   cd squid-$VERSION; \
- ./configure \
+  ./configure \
     --with-default-user=squid \
     --with-openssl=$(openssl version -d | sed 's/OPENSSLDIR: \|"//g') \
     --enable-ssl-crtd; \
@@ -24,8 +24,8 @@ RUN set -ex; \
 COPY --from=build /usr/local/squid /usr/local/squid
 RUN apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
-    --no-install-suggests -y libssl-dev; \
-    apt-get clean autoclean; \
-    apt-get autoremove --yes; \
-    rm -rf /var/lib/{apt,dpkg,cache,log}/
+    --no-install-suggests -y libssl-dev openssl
+    # apt-get clean autoclean; \
+    # apt-get autoremove --yes; \
+    # rm -rf /var/lib/{apt,dpkg,cache,log}/
 ENTRYPOINT ["/init"]
