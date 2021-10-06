@@ -1,5 +1,5 @@
 FROM ubuntu:20.04 as build
-ARG VERSION=5.1
+ARG VERSION=5.2
 ARG MAJOR_VERSION=5
 ADD http://www.squid-cache.org/Versions/v$MAJOR_VERSION/squid-$VERSION.tar.gz squid.tar.gz
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
