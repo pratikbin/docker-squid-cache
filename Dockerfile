@@ -13,7 +13,7 @@ RUN tar -xzf squid.tar.gz; \
   make install -j$(nproc); \
   /usr/local/squid/sbin/squid -v
 
-FROM ubuntu:21.10
+FROM ubuntu:20.04
 ARG S6_VERSION=2.2.0.1
 ADD https://github.com/just-containers/s6-overlay/releases/download/v$S6_VERSION/s6-overlay-amd64-installer /tmp/
 ENV PATH="/usr/local/squid/sbin/:/usr/local/squid/bin/:${PATH}"
