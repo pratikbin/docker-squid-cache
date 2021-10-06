@@ -3,10 +3,13 @@ ARG VERSION=5.1
 ARG MAJOR_VERSION=5
 ADD http://www.squid-cache.org/Versions/v$MAJOR_VERSION/squid-$VERSION.tar.gz squid.tar.gz
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
-    --no-install-suggests -y make gcc g++ wget tar grep
+    --no-install-suggests -y make gcc g++ tar openssl libssl-dev
 RUN tar -xzf squid.tar.gz; \
   cd squid-$VERSION; \
- ./configure --with-default-user=squid; \
+ ./configure \
+    --with-default-user=squid \
+    --with-openssl=$(openssl version -d | sed 's/OPENSSLDIR: \|"//g') \
+    --enable-ssl-crtd; \
   make install -j$(nproc); \
   /usr/local/squid/sbin/squid -v
 

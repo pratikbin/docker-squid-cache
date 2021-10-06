@@ -6,6 +6,7 @@ services:
     container_name: squid
     ports:
       - 3128:3128
+      - 3129:3129
     volumes:
       - ./conf/squid-cache.conf:/usr/local/squid/etc/squid.conf
       - ./cache:/cache

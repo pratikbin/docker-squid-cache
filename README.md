@@ -4,7 +4,6 @@ Docker image for squid cache v5.1 <http://www.squid-cache.org>
 
 > 5.2 releasing soon
 
-
 ## Run
 
 - ```bash
@@ -14,6 +13,7 @@ Docker image for squid cache v5.1 <http://www.squid-cache.org>
   ```
 
 - With custom config
+
   ```bash
   docker run -it --rm -v $(pwd)/squid-cache.conf:/usr/local/squid/etc/squid.conf pratikimprowise/squid
   ```

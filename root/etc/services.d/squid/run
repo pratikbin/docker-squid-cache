@@ -3,4 +3,4 @@
 s6-envuidgid squid
 s6-applyuidgid -U
 
-/usr/local/squid/sbin/squid --foreground -d 1
+/usr/local/squid/sbin/squid --foreground -d 1 -Y

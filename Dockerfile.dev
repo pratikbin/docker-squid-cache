@@ -1,36 +1,27 @@
-# FROM ubuntu:20.04 as build
-FROM pratikimprowise/squid:5.1
-RUN adduser --disabled-login --no-create-home --disabled-password squid
-# RUN chown -cR squid /usr/local/squid/var/ && squid -z
-RUN mkdir /cache && chown -cR squid:squid /usr/local/squid/ /cache
-USER squid
-ENTRYPOINT ["/tini", "--"]
-CMD ["/usr/local/squid/sbin/squid","--foreground","-d","1"]
+FROM ubuntu:20.04 as build
+ARG VERSION=5.1
+ARG MAJOR_VERSION=5
+ADD http://www.squid-cache.org/Versions/v$MAJOR_VERSION/squid-$VERSION.tar.gz squid.tar.gz
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
+    --no-install-suggests -y make gcc g++ tar openssl libssl-dev
+RUN tar -xzf squid.tar.gz; \
+  cd squid-$VERSION; \
+ ./configure \
+    --with-default-user=squid \
+    --with-openssl=$(openssl version -d | sed 's/OPENSSLDIR: \|"//g') \
+    --enable-ssl-crtd; \
+  make install -j$(nproc); \
+  /usr/local/squid/sbin/squid -v
 
-
-# FROM ubuntu:20.04 as build
-# ARG VERSION=5.1
-# ARG MAJOR_VERSION=5
-# ARG TINI_VERSION=0.19.0
-# ADD https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini /tini
-# WORKDIR /app
-# RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
-#     --no-install-suggests -y \make gcc g++ wget tar grep gawk
-# RUN wget --progress=dot:giga http://www.squid-cache.org/Versions/v$MAJOR_VERSION/squid-$VERSION.tar.gz
-# RUN tar -xzf squid-*.tar.gz
-# RUN cd squid-*; \
-#  ./configure
-# RUN make install -j$(nproc); \
-#   chmod +x /tini; \
-#   /usr/local/squid/sbin/squid -v
+RUN
 
 # FROM ubuntu:21.10
-# ## for squid and squidclient
+# ARG S6_VERSION=2.2.0.1
+# ADD https://github.com/just-containers/s6-overlay/releases/download/v$S6_VERSION/s6-overlay-amd64-installer /tmp/
 # ENV PATH="/usr/local/squid/sbin/:/usr/local/squid/bin/:${PATH}"
-
-# COPY --from=build /tini /tini
 # COPY --from=build /usr/local/squid /usr/local/squid
-# ## give access to nobody
-# RUN chmod o+rw -R /usr/local/squid/var/logs && squid -z
-# ENTRYPOINT ["/tini", "--"]
-# CMD ["squid","--foreground"]
+# RUN set -ex; \
+#   chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer /; \
+#   adduser --disabled-login --no-create-home --disabled-password squid
+# COPY root/ /
+# ENTRYPOINT ["/init"]
