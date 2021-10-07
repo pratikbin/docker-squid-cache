@@ -1,0 +1,20 @@
+#!/usr/bin/with-contenv bash
+
+conf=${CONFIG:-"/usr/local/squid/etc/squid.conf"}
+HASH="$(md5sum $conf | cut -d' ' -f1)"
+
+while true; do
+  tmp_hash=$(md5sum $conf | cut -d' ' -f1)
+  if [[ "$HASH" != "$tmp_hash" ]]; then
+    echo "##########################"
+    echo "Changes detected in config"
+    echo "##########################"
+    HASH="${tmp_hash}"
+    /usr/local/squid/sbin/squid -k reconfigure 2>&1
+    echo "#####################"
+    echo "Reloaded successfully"
+    echo "#####################"
+  else
+    sleep 5
+  fi
+done

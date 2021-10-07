@@ -8,8 +8,8 @@ RUN tar -xzf squid.tar.gz; \
   cd squid-$VERSION; \
   ./configure \
     --with-default-user=squid \
-    --with-openssl=$(openssl version -d | sed 's/OPENSSLDIR: \|"//g') \
-    --enable-ssl-crtd; \
+    --with-openssl=$(openssl version -d | sed 's/OPENSSLDIR: \|"//g'); \
+    # --enable-ssl-crtd; \
   make install -j$(nproc); \
   /usr/local/squid/sbin/squid -v
 
@@ -24,8 +24,8 @@ RUN set -ex; \
 COPY --from=build /usr/local/squid /usr/local/squid
 RUN apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
-    --no-install-suggests -y libssl-dev ca-certificates openssl
-    # apt-get clean autoclean; \
-    # apt-get autoremove --yes; \
-    # rm -rf /var/lib/{apt,dpkg,cache,log}/
+    --no-install-suggests -y libssl-dev ca-certificates openssl; \
+    apt-get clean autoclean; \
+    apt-get autoremove --yes; \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
 ENTRYPOINT ["/init"]
