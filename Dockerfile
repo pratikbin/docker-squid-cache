@@ -24,7 +24,7 @@ RUN set -ex; \
 COPY --from=build /usr/local/squid /usr/local/squid
 RUN apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
-    --no-install-suggests -y libssl-dev openssl
+    --no-install-suggests -y libssl-dev ca-certificates openssl
     # apt-get clean autoclean; \
     # apt-get autoremove --yes; \
     # rm -rf /var/lib/{apt,dpkg,cache,log}/

@@ -20,8 +20,6 @@ Docker image for squid cache v5.1 <http://www.squid-cache.org>
 
 ## Tags
 
----
-
 ### `pratikimprowise/squid:`
 
 - [`latest` , `5` , `5.1` , `5.1-main`](https://hub.docker.com/r/pratikimprowise/squid/tags?page=1&ordering=last_updated&name=5)
