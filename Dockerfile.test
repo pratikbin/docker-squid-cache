@@ -1,21 +1,16 @@
-# FROM ubuntu:20.04 as build
-FROM pratikimprowise/squid:5.1
+FROM ubuntu:20.04
 ARG S6_VERSION=2.2.0.1
-COPY --from=pratikimprowise/squid:dev-6e6b8bb-202110050700852 /usr/local/squid /usr/local/squid
 ADD https://github.com/just-containers/s6-overlay/releases/download/v$S6_VERSION/s6-overlay-amd64-installer /tmp/
 ENV PATH="/usr/local/squid/sbin/:/usr/local/squid/bin/:${PATH}"
+COPY root/ /
 RUN set -ex; \
   chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer /; \
   adduser --disabled-login --no-create-home --disabled-password squid
-COPY root/ /
-# RUN adduser --disabled-login --no-create-home --disabled-password squid
-# RUN chown -cR squid /usr/local/squid/var/ && squid -z
-# RUN mkdir -p /cache /etc/services.d/squid/ && chown -cR squid:squid /usr/local/squid/ /cache; \
-
-  # printf '/cache true squid:squid 0644 0755' >/etc/fix-attrs.d/01-squid-cache; \
-  # printf '/usr/local/squid/var/ true squid:squid 0644 0755' >/etc/fix-attrs.d/02-squid-var; \
-
-# USER squid
-# ENTRYPOINT ["/tini", "--"]
-# CMD ["/usr/local/squid/sbin/squid","--foreground","-d","1"]
+COPY --from=pratikimprowise/squid:build-dev-7726e12-202110071031126 /usr/local/squid /usr/local/squid
+RUN apt-get update; \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
+    --no-install-suggests -y libssl-dev ca-certificates openssl; \
+    apt-get clean autoclean; \
+    apt-get autoremove --yes; \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
 ENTRYPOINT ["/init"]

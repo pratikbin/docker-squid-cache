@@ -18,6 +18,12 @@ Docker image for squid cache v5.1 <http://www.squid-cache.org>
   docker run -it --rm -v $(pwd)/squid-cache.conf:/usr/local/squid/etc/squid.conf pratikimprowise/squid
   ```
 
+- Import CA to your browser or OS
+
+- Setup HTTP proxy
+
+- Done.
+
 ## Tags
 
 ### `pratikimprowise/squid:`

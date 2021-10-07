@@ -3,7 +3,7 @@
 conf=${CONFIG:-"/usr/local/squid/etc/squid.conf"}
 HASH="$(md5sum $conf | cut -d' ' -f1)"
 
-while true; do
+while sleep 1; do
   tmp_hash=$(md5sum $conf | cut -d' ' -f1)
   if [[ "$HASH" != "$tmp_hash" ]]; then
     echo "##########################"
@@ -14,7 +14,5 @@ while true; do
     echo "#####################"
     echo "Reloaded successfully"
     echo "#####################"
-  else
-    sleep 5
   fi
 done
