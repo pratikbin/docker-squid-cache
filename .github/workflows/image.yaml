@@ -37,7 +37,7 @@ jobs:
         with:
           images: pratikimprowise/squid
           tags: |
-            type=raw,value={{branch}}-{{sha}}-{{date 'YYYYMMDDHHmmSSS'}}
+            type=raw,value=build-{{branch}}-{{sha}}-{{date 'YYYYMMDDHHmmSSS'}}
 
       - name: Docker meta (master)
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
