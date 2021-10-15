@@ -1,0 +1,6 @@
+#!/usr/bin/execlineb
+
+s6-envuidgid squid
+s6-applyuidgid -U
+
+/usr/local/squid/sbin/squid -k parse 2>&1

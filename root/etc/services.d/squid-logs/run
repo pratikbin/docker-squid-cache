@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+
+LOG_DIR="/usr/local/squid/var/logs/"
+ACC_LOG_FILE="access.log"
+LOG="${LOG_DIR%\/}/${ACC_LOG_FILE#\/}"
+
+while true; do
+  if [[ -f ${LOG} ]]; then
+    tail -f ${LOG}
+  else
+    sleep 1
+  fi
+done
