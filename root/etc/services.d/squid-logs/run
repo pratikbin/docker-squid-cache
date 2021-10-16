@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-LOG_DIR="/usr/local/squid/var/logs/"
+LOG_DIR="/var/log/squid"
 ACC_LOG_FILE="access.log"
 LOG="${LOG_DIR%\/}/${ACC_LOG_FILE#\/}"
 

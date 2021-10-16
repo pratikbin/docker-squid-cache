@@ -1,0 +1,30 @@
+#!/usr/bin/with-contenv bash
+exec 1>&2
+
+SSL_PATH="${SSL_PATH:-"/etc/squid/ssl"}"
+mkdir -p "${SSL_PATH}"
+SSL_PATH=${SSL_PATH%\/}
+
+if [[ ! -f ${SSL_PATH}/CA.pem && ! -f ${SSL_PATH}/private.pem ]]; then
+  echo "Cert not found" >&2
+  exit 2
+fi
+
+ls ${SSL_PATH}
+echo CA.pem
+cat ${SSL_PATH}/ca.pem
+echo private.pem
+cat ${SSL_PATH}/private.pem
+
+cachedir="$(grep ^cache_dir /etc/squid/squid.conf)"
+if [ "${cachedir}" ]; then
+  for dir in $(awk '{print$3}' <<<${cachedir}); do
+    mkdir -p ${dir};
+    chmod 777 -cR ${dir}
+  done
+  squid -z --foreground 2>&1
+fi
+squid -k parse 2>&1
+
+/usr/lib/squid/security_file_certgen -c -s /var/cache/squid/ssl_db -M 4MB
+chmod 777 -cR /var/cache/squid/
