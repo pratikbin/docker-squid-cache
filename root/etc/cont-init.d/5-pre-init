@@ -1,4 +1,4 @@
-create#!/usr/bin/with-contenv bash
+#!/usr/bin/with-contenv bash
 
 SSL_PATH=${SSL_PATH:-"/etc/squid/ssl"}
 SSL_PATH=${SSL_PATH%\/}
