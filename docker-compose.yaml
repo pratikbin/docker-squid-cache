@@ -2,17 +2,17 @@ version: "3.7"
 services:
   squid:
     restart: always
-    image: squid-test
+    image: pratikimprowise/squid
     build:
       context: .
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile
     # image: pratikimprowise/squid:dev
     container_name: squid
     ports:
-      - 3128:3128
+      # - 3128:3128
       - 3129:3129
-      - 4129:4129
+      # - 4129:4129
     volumes:
-      - ./conf/squid-cache.conf:/usr/local/squid/etc/squid.conf
-      - ./ssl:/usr/local/squid/etc/ssl
+      - ./conf/squid-cache.conf:/etc/squid/squid.conf
+      - ./ssl:/etc/squid/ssl
       - ./cache:/cache

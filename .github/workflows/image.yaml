@@ -27,7 +27,7 @@ jobs:
           tags: |
             type=raw,value={{branch}}-{{sha}}-{{date 'YYYYMMDDHHmmSSS'}}
             type=raw,value={{branch}}
-            type=raw,value=5.1-{{branch}}
+            type=raw,value=5.0-{{branch}}
             type=raw,value=5-{{branch}}
 
       - name: Docker meta (build)
@@ -47,7 +47,7 @@ jobs:
           images: pratikimprowise/squid
           tags: |
             type=raw,value={{branch}}-{{sha}}-{{date 'YYYYMMDDHHmmSSS'}}
-            type=raw,value=5.1
+            type=raw,value=5.0
             type=raw,value=5
             type=raw,value=latest
 

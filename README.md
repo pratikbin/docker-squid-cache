@@ -1,10 +1,24 @@
 # docker-squid-cache
 
-Docker image for squid cache v5.1 <http://www.squid-cache.org>
-
-> 5.2 releasing soon
+Docker image for squid cache v5 <http://www.squid-cache.org>
 
 ## Run
+
+- Create certs
+
+  ```bash
+  mkdir -p ssl
+  openssl req -new -newkey rsa:2048 -sha256 -days 9999 -nodes -x509 \
+    -extensions v3_ca -keyout ssl/private.pem \
+    ## -subj "/O=Improwised/OU=DevOpsDept/C=IN/ST=Gujarat/L=Rajkot" \
+    -out ssl/private.pem
+
+  openssl x509 -in ssl/private.pem \
+    -outform DER -out ssl/CA.der
+
+  openssl x509 -inform DER -in ssl/CA.der \
+    -out ssl/CA.pem
+  ```
 
 - ```bash
   docker run -it --rm pratikimprowise/squid
@@ -15,12 +29,10 @@ Docker image for squid cache v5.1 <http://www.squid-cache.org>
 - With custom config
 
   ```bash
-  docker run -it --rm -v $(pwd)/squid-cache.conf:/usr/local/squid/etc/squid.conf pratikimprowise/squid
+  docker run -it --rm -v $(pwd)/squid-cache.conf:/etc/squid/squid.conf pratikimprowise/squid
   ```
 
-- Import CA to your browser or OS
-
-- Setup HTTP proxy
+- Setup HTTP proxy on your devices or browsers (import CA cert to devices or browsers)
 
 - Done.
 
@@ -28,4 +40,4 @@ Docker image for squid cache v5.1 <http://www.squid-cache.org>
 
 ### `pratikimprowise/squid:`
 
-- [`latest` , `5` , `5.1` , `5.1-main`](https://hub.docker.com/r/pratikimprowise/squid/tags?page=1&ordering=last_updated&name=5)
+- [`latest` , `5` , `5.0` , `5.0-main`](https://hub.docker.com/r/pratikimprowise/squid/tags?page=1&ordering=last_updated&name=5)
