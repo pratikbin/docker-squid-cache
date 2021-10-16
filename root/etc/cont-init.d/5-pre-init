@@ -1,30 +1,34 @@
 #!/usr/bin/with-contenv bash
-exec 1>&2
 
-SSL_PATH="${SSL_PATH:-"/etc/squid/ssl"}"
-mkdir -p "${SSL_PATH}"
+SSL_PATH=${SSL_PATH:-"/etc/squid/ssl"}
 SSL_PATH=${SSL_PATH%\/}
 
+## Check for ssl certs
 if [[ ! -f ${SSL_PATH}/CA.pem && ! -f ${SSL_PATH}/private.pem ]]; then
   echo "Cert not found" >&2
   exit 2
 fi
 
-ls ${SSL_PATH}
+## Show certs
+ls -alt ${SSL_PATH}
 echo CA.pem
-cat ${SSL_PATH}/ca.pem
+head -n2 ${SSL_PATH}/CA.pem
 echo private.pem
-cat ${SSL_PATH}/private.pem
+head -n2 ${SSL_PATH}/private.pem
 
+## Dynamically create cache directory if exist in config
 cachedir="$(grep ^cache_dir /etc/squid/squid.conf)"
 if [ "${cachedir}" ]; then
   for dir in $(awk '{print$3}' <<<${cachedir}); do
     mkdir -p ${dir};
-    chmod 777 -cR ${dir}
+    chmod 777 -R ${dir}
   done
   squid -z --foreground 2>&1
 fi
+
+## Parse config file
 squid -k parse 2>&1
 
+## Init ssldb and fix permission
 /usr/lib/squid/security_file_certgen -c -s /var/cache/squid/ssl_db -M 4MB
-chmod 777 -cR /var/cache/squid/
+chmod 777 -R /var/cache/squid/

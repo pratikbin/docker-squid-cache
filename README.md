@@ -2,6 +2,15 @@
 
 Docker image for squid cache v5 <http://www.squid-cache.org>
 
+## Features
+
+- `s6-overlay`ed
+- Dynamically create `cache_dir` if exist
+- Config reloader
+- Stdout squid access logs
+- Cert-checking
+- *zero vulnerabilities by Trivy [`2021-10-16T23:44:19.434+0530`]
+
 ## Run
 
 - Create certs
@@ -21,9 +30,9 @@ Docker image for squid cache v5 <http://www.squid-cache.org>
   ```
 
 - ```bash
-  docker run -it --rm pratikimprowise/squid
+  docker run -it --rm pratikimprowise/squid:main
   ## as daemon
-  docker run -d pratikimprowise/squid
+  docker run -d pratikimprowise/squid:main
   ```
 
 - With custom config

@@ -55,8 +55,8 @@ jobs:
           context: .
           tags: ${{ steps.meta.outputs.tags }}
           push: true
-          # cache-from: type=gha
-          # cache-to: type=gha,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Build and Push (master)
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
@@ -65,5 +65,5 @@ jobs:
           context: .
           tags: ${{ steps.master.outputs.tags }}
           push: true
-          # cache-from: type=gha
-          # cache-to: type=gha,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

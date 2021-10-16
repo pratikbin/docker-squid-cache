@@ -1,3 +1,3 @@
 #!/usr/bin/with-contenv bash
 
-squid --foreground -d 5 -Y 2>&1
+exec squid --foreground -d 5 -Y 2>&1
