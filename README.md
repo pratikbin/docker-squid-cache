@@ -29,21 +29,19 @@ Docker image for squid cache v5 <http://www.squid-cache.org>
     -out ssl/CA.pem
   ```
 
-- ```bash
-  docker run -it --rm pratikimprowise/squid:main
-  ## as daemon
-  docker run -d pratikimprowise/squid:main
-  ```
-
-- With custom config
+- Run squid
 
   ```bash
-  docker run -it --rm -v $(pwd)/squid-cache.conf:/etc/squid/squid.conf pratikimprowise/squid
+  docker-compoes up
+  # OR
+  docker run -it --name squid \
+    -v $(pwd)/conf/squid-cache.conf:/etc/squid/squid.conf \
+    -c $(pwd)/ssl:/etc/squid/ssl \
+    -p 3129:3129 \
+    pratikimprowise/squid:main
   ```
 
 - Setup HTTP proxy on your devices or browsers (import CA cert to devices or browsers)
-
-- Done.
 
 ## Tags
 

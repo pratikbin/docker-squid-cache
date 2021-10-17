@@ -2,7 +2,7 @@ version: "3.7"
 services:
   squid:
     restart: always
-    image: pratikimprowise/squid:dev
+    image: pratikimprowise/squid:main
     build:
       context: .
       dockerfile: Dockerfile

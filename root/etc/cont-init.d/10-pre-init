@@ -2,6 +2,7 @@
 
 SSL_PATH=${SSL_PATH:-"/etc/squid/ssl"}
 SSL_PATH=${SSL_PATH%\/}
+SSL_DBSIZE=${SSL_DBSIZE:-4}
 
 ## Check for ssl certs
 if [[ ! -f ${SSL_PATH}/CA.pem && ! -f ${SSL_PATH}/private.pem ]]; then
@@ -20,8 +21,7 @@ head -n2 ${SSL_PATH}/private.pem
 cachedir="$(grep ^cache_dir /etc/squid/squid.conf)"
 if [ "${cachedir}" ]; then
   for dir in $(awk '{print$3}' <<<${cachedir}); do
-    mkdir -p ${dir};
-    chmod 777 -R ${dir}
+    mkdir -m777 -p ${dir}
   done
   squid -z --foreground 2>&1
 fi
@@ -30,5 +30,5 @@ fi
 squid -k parse 2>&1
 
 ## Init ssldb and fix permission
-/usr/lib/squid/security_file_certgen -c -s /var/cache/squid/ssl_db -M 4MB
+/usr/lib/squid/security_file_certgen -c -s /var/cache/squid/ssl_db -M ${SSL_DBSIZE}MB
 chmod 777 -R /var/cache/squid/
